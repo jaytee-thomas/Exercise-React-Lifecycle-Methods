@@ -1,33 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 
-function Timer() {
-  const [list, setList] = useState(['ready', 'set', 'GO']);
-  const [text, setText] = useState('');
+function FilmsList() {
+  const [list, setList] = useState([]);
 
-  const handleInput = event => {
-    setText(event.target.value);
+  const getFilms = () => {
+    fetch("https://studioghibliapi-d6fc8.web.app/films")
+      .then(response => response.json())
+      .then(data => {
+        setList(data);
+      })
+      .catch(error => {
+        console.error("Error fetching films:", error);
+      });
   };
 
-  const handleSubmit = event => {
-    event.preventDefault();
-    setList([...list, text]);
-    setText('');
-  };
+  useEffect(() => {
+    getFilms();
+  }, []);
 
   return (
-    <div>
-      <h1>Timer</h1>
-      <ul>
-        {list.map(item => (
-          <li key={item}>{item}</li>
-        ))}
-      </ul>
-      <form onSubmit={handleSubmit}>
-        <input value={text} onChange={handleInput} />
-        <button type="submit">Add</button>
-      </form>
-    </div>
+    <ul>
+      {list.map(item => (
+        <li key={item.id}>{item.title}</li>
+      ))}
+    </ul>
   );
 }
 
-export default Timer;
+export default FilmsList;
