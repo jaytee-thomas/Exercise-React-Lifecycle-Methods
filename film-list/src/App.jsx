@@ -1,15 +1,21 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import FilmsList from './components/film-list';
 
-class App extends Component {
-  render() {
-    return (
-      <div>
-        <h1>Studio Ghibli Films</h1>
-        <FilmsList />
-      </div>
-    );
-  }
+function App() {
+  const [showFilms, setShowFilms] = useState(true);
+
+  const handleToggle = () => {
+    setShowFilms(!showFilms);
+  };
+
+  return (
+    <div>
+      <button onClick={handleToggle}>
+        {showFilms ? 'Hide Films' : 'Show Films'}
+      </button>
+      {showFilms && <FilmsList />}
+    </div>
+  );
 }
 
 export default App;
